@@ -35,8 +35,8 @@ public class Program {
         }
         finally {
 
-            st.close();
-            rs.close();
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
             DB.closeConnection();
         }
     }
