@@ -27,9 +27,9 @@
           <database-type value="MYSQL" />
           <config-type value="BASIC" />
           <database-version value="8.0" />
-          <driver-source value="BUNDLED" />
-          <driver-library value="" />
-          <driver value="" />
+          <driver-source value="EXTERNAL" />
+          <driver-library value="C:\java-libs\jdbc-connectors\mysql-connector-j-9.1.0.jar" />
+          <driver value="com.mysql.jdbc.Driver" />
           <url-type value="DATABASE" />
           <host value="localhost" />
           <port value="3306" />
