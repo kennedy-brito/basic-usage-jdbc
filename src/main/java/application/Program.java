@@ -1,27 +1,93 @@
 package application;
 
-import db.DB;
+import db.Db;
+import db.DbIntegrityException;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 
 public class Program {
     public static void main(String[] args) {
 
+        
+    }
+
+    private static void delete() {
         Connection conn = null;
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         PreparedStatement st = null;
 
         try{
-            conn = DB.getConnection();
+            conn = Db.getConnection();
+
+            st = conn.prepareStatement(
+                    "DELETE FROM Department "
+                            + "WHERE "
+                            + "Id = ?"
+            );
+
+            st.setInt(1, 2);
+
+            int rowsAffected = st.executeUpdate();
+
+            System.out.println("Done! Rows affected: " + rowsAffected);
+        }
+        catch (SQLException e){
+            throw new DbIntegrityException(e.getMessage());
+        }
+        finally {
+
+            Db.closeStatement(st);
+            Db.closeConnection();
+        }
+    }
+
+    private static void update() {
+        Connection conn = null;
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        PreparedStatement st = null;
+
+        try{
+            conn = Db.getConnection();
+
+            st = conn.prepareStatement(
+                    "UPDATE seller "
+                            + "SET BaseSalary = BaseSalary + ? "
+                            + "WHERE "
+                            + "(DepartmentId = ?)"
+            );
+
+            st.setDouble(1, 200.0);
+            st.setInt(2, 2);
+
+            int rowsAffected = st.executeUpdate();
+
+            System.out.println("Done! Rows affected: " + rowsAffected);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+
+            Db.closeStatement(st);
+            Db.closeConnection();
+        }
+    }
+
+    public static void insert(){
+        Connection conn = null;
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        PreparedStatement st = null;
+
+        try{
+            conn = Db.getConnection();
 
             st = conn.prepareStatement(
                     "INSERT INTO seller "
-                    + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
-                    + "VALUES "
-                    + "(?, ?, ?, ?, ?)",
+                            + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+                            + "VALUES "
+                            + "(?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             );
 
@@ -48,11 +114,10 @@ public class Program {
         }
         finally {
 
-            DB.closeStatement(st);
-            DB.closeConnection();
+            Db.closeStatement(st);
+            Db.closeConnection();
         }
     }
-
     public static void select(){
         Connection conn = null;
 
@@ -61,7 +126,7 @@ public class Program {
         ResultSet rs = null;
 
         try{
-            conn = DB.getConnection();
+            conn = Db.getConnection();
 
             st = conn.createStatement();
 
@@ -79,9 +144,9 @@ public class Program {
         }
         finally {
 
-            DB.closeStatement(st);
-            DB.closeResultSet(rs);
-            DB.closeConnection();
+            Db.closeStatement(st);
+            Db.closeResultSet(rs);
+            Db.closeConnection();
         }
     }
 }

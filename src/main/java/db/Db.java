@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
-public class DB {
+public class Db {
 
     private static Connection conn = null;
 
